@@ -1,0 +1,159 @@
+fileFormatVersion: 2
+guid: 12a2c5670b04a0940b32d9399315a2e5
+timeCreated: 1536113965
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Chair_frag_001
+    100004: Chair_frag_002
+    100006: Chair_frag_003
+    100008: Chair_frag_004
+    100010: Chair_frag_005
+    100012: Chair_frag_006
+    100014: Chair_frag_007
+    100016: Chair_frag_008
+    100018: Chair_frag_009
+    100020: Chair_frag_010
+    100022: Chair_frag_011
+    100024: Chair_frag_012
+    100026: Chair_frag_013
+    400000: //RootNode
+    400002: Chair_frag_001
+    400004: Chair_frag_002
+    400006: Chair_frag_003
+    400008: Chair_frag_004
+    400010: Chair_frag_005
+    400012: Chair_frag_006
+    400014: Chair_frag_007
+    400016: Chair_frag_008
+    400018: Chair_frag_009
+    400020: Chair_frag_010
+    400022: Chair_frag_011
+    400024: Chair_frag_012
+    400026: Chair_frag_013
+    2100000: _libroswire_000000000
+    2100002: No Name
+    2300000: //RootNode
+    2300002: Chair_frag_001
+    2300004: Chair_frag_002
+    2300006: Chair_frag_003
+    2300008: Chair_frag_004
+    2300010: Chair_frag_005
+    2300012: Chair_frag_006
+    2300014: Chair_frag_007
+    2300016: Chair_frag_008
+    2300018: Chair_frag_009
+    2300020: Chair_frag_010
+    2300022: Chair_frag_011
+    2300024: Chair_frag_012
+    2300026: Chair_frag_013
+    3300000: //RootNode
+    3300002: Chair_frag_001
+    3300004: Chair_frag_002
+    3300006: Chair_frag_003
+    3300008: Chair_frag_004
+    3300010: Chair_frag_005
+    3300012: Chair_frag_006
+    3300014: Chair_frag_007
+    3300016: Chair_frag_008
+    3300018: Chair_frag_009
+    3300020: Chair_frag_010
+    3300022: Chair_frag_011
+    3300024: Chair_frag_012
+    3300026: Chair_frag_013
+    4300000: Chair
+    4300002: Chair_frag_001
+    4300004: Chair_frag_002
+    4300006: Chair_frag_003
+    4300008: Chair_frag_004
+    4300010: Chair_frag_005
+    4300012: Chair_frag_006
+    4300014: Chair_frag_007
+    4300016: Chair_frag_008
+    4300018: Chair_frag_009
+    4300020: Chair_frag_010
+    4300022: Chair_frag_011
+    4300024: Chair_frag_012
+    4300026: Chair_frag_013
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
