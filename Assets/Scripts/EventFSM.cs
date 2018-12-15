@@ -67,5 +67,16 @@ public enum PlayerActions
     Attacked,
     Steady,
     Hurt,
-    AttackReady
+    AttackReady,
+    HurtReady,
+    Death
+}
+
+public enum EnemyActions
+{
+    PlayerInSight,
+    PlayerOutOfInterest,
+    PlayerInRange,
+    PlayerOutOfRange,
+    Death
 }

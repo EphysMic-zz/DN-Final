@@ -21456,7 +21456,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 0.7
-    functionName: HitAnimOff
+    functionName: HitReady
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

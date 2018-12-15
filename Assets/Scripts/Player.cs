@@ -13,7 +13,11 @@ public class Player : MonoBehaviour {
     [SerializeField] float _speed;
     [SerializeField] float _turnSpeed;
 
-    [SerializeField] Transform _feets;
+    Sword _sword;
+
+    [SerializeField] int _currentHealth;
+    [SerializeField] int _maxHealth;
+    bool _damaged;
 
     bool _blocked;
 
@@ -22,16 +26,22 @@ public class Player : MonoBehaviour {
         _controller = FindObjectOfType<InputHandler>();
         _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
+        _sword = GetComponentInChildren<Sword>();
+        _currentHealth = _maxHealth;
 
         #region FSM
         var idle = new State<PlayerActions>("Idle");
         var moving = new State<PlayerActions>("Moving");
         var attack = new State<PlayerActions>("Attack");
+        var damaged = new State<PlayerActions>("Damaged");
+        var death = new State<PlayerActions>("Death");
 
         //Idle
         idle.OnEnter += () => _anim.Play("Idle");
         idle.AddTransition(PlayerActions.Moved, moving);
         idle.AddTransition(PlayerActions.Attacked, attack);
+        idle.AddTransition(PlayerActions.Hurt, damaged);
+        idle.AddTransition(PlayerActions.Death, death);
 
         //Moving
         moving.OnUpdate += () =>
@@ -45,6 +55,8 @@ public class Player : MonoBehaviour {
         };
         moving.AddTransition(PlayerActions.Steady, idle);
         moving.AddTransition(PlayerActions.Attacked, attack);
+        moving.AddTransition(PlayerActions.Hurt, damaged);
+        moving.AddTransition(PlayerActions.Death, death);
 
         //Attack
         attack.OnEnter += () =>
@@ -53,6 +65,30 @@ public class Player : MonoBehaviour {
             _anim.Play("Attack");
         };
         attack.AddTransition(PlayerActions.AttackReady, idle);
+        attack.AddTransition(PlayerActions.Hurt, damaged);
+        attack.AddTransition(PlayerActions.Death, death);
+
+        //Damaged
+        damaged.OnEnter += () =>
+        {
+            _anim.Play("GetHit");
+            _blocked = true;
+            _damaged = true;
+        };
+        damaged.OnExit += () =>
+        {
+            _blocked = false;
+            _damaged = false;
+        };
+        damaged.AddTransition(PlayerActions.HurtReady, idle);
+        damaged.AddTransition(PlayerActions.Death, death);
+
+        //Death
+        death.OnEnter += () =>
+        {
+            _blocked = true;
+            _anim.Play("Death");
+        };
 
         _fsm = new EventFSM<PlayerActions>(idle);
         #endregion
@@ -90,11 +126,34 @@ public class Player : MonoBehaviour {
     void Attack()
     {
         _blocked = true;
+        _sword.GetComponent<Collider>().enabled = true;
     }
 
-    public void Unblock()
+    public void AttackReady()
     {
         _blocked = false;
+        _sword.GetComponent<Collider>().enabled = false;
         _fsm.Feed(PlayerActions.AttackReady);
+    }
+
+    public void HitReady()
+    {
+        _blocked = false;
+        _damaged = false;
+        _fsm.Feed(PlayerActions.HurtReady);
+    }
+
+    public void Damage(int amount)
+    {
+        if (!_damaged)
+        {
+            if (_currentHealth > 0)
+            {
+                _currentHealth -= amount;
+                _fsm.Feed(PlayerActions.Hurt);
+            }
+            else
+                _fsm.Feed(PlayerActions.Death);
+        }
     }
 }
