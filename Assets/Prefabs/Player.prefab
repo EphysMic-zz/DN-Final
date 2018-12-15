@@ -2331,7 +2331,7 @@ MonoBehaviour:
   _speed: 4
   _turnSpeed: 180
   _currentHealth: 0
-  _maxHealth: 2
+  _maxHealth: 10
 --- !u!124 &124534022619544292
 Behaviour:
   m_ObjectHideFlags: 1

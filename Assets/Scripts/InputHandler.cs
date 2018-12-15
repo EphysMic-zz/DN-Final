@@ -9,7 +9,8 @@ public class InputHandler : MonoBehaviour {
     public event Action<float> OnHorizontalAxisChanged = delegate { };
     public event Action OnSteadyAxis = delegate { };
 
-    public event Action OnAttackPressed;
+    public event Action OnAttackPressed = delegate { };
+    public event Action OnDefendPressed = delegate { };
 
     public float verticalAxis
     {
@@ -40,5 +41,8 @@ public class InputHandler : MonoBehaviour {
 
         if (Input.GetButtonDown("Attack"))
             OnAttackPressed();
+
+        if (Input.GetButtonDown("Defend"))
+            OnDefendPressed();
     }
 }

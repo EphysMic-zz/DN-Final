@@ -20,6 +20,7 @@ public class Skeleton : Enemy {
         var idle = new State<EnemyActions>("Idle");
         var chasing = new State<EnemyActions>("Chasing");
         var attacking = new State<EnemyActions>("Attacking");
+        var damaged = new State<EnemyActions>("Damaged");
         var dead = new State<EnemyActions>("Dead");
 
         //Idle
@@ -81,6 +82,7 @@ public class Skeleton : Enemy {
         attacking.AddTransition(EnemyActions.PlayerOutOfRange, chasing);
         attacking.AddTransition(EnemyActions.PlayerOutOfInterest, idle);
 
+
         _fsm = new EventFSM<EnemyActions>(idle);
         #endregion
     }
@@ -92,7 +94,8 @@ public class Skeleton : Enemy {
 
         if (LineOfSight())
             _fsm.Feed(EnemyActions.PlayerInSight);
-        else
+
+        if(Vector3.Distance(transform.position, _player.transform.position) > _rangeOfVision)
             _fsm.Feed(EnemyActions.PlayerOutOfInterest);
 
         if (Vector3.Distance(transform.position, _player.transform.position) < _rangeToAttack)
@@ -145,6 +148,8 @@ public class Skeleton : Enemy {
     public override void Damage(int amount)
     {
         base.Damage(amount);
+
+        _fsm.Feed(EnemyActions.PlayerOutOfInterest);
 
         if (_currentHealth <= 0)
             Destroy(gameObject);

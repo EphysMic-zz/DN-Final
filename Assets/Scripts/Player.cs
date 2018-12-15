@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
     [SerializeField] int _currentHealth;
     [SerializeField] int _maxHealth;
     bool _damaged;
+    bool _defense;
 
     bool _blocked;
 
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour {
         var idle = new State<PlayerActions>("Idle");
         var moving = new State<PlayerActions>("Moving");
         var attack = new State<PlayerActions>("Attack");
+        var defend = new State<PlayerActions>("Defend");
         var damaged = new State<PlayerActions>("Damaged");
         var death = new State<PlayerActions>("Death");
 
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour {
         idle.OnEnter += () => _anim.Play("Idle");
         idle.AddTransition(PlayerActions.Moved, moving);
         idle.AddTransition(PlayerActions.Attacked, attack);
+        idle.AddTransition(PlayerActions.Blocking, defend);
         idle.AddTransition(PlayerActions.Hurt, damaged);
         idle.AddTransition(PlayerActions.Death, death);
 
@@ -55,6 +58,7 @@ public class Player : MonoBehaviour {
         };
         moving.AddTransition(PlayerActions.Steady, idle);
         moving.AddTransition(PlayerActions.Attacked, attack);
+        moving.AddTransition(PlayerActions.Blocking, defend);
         moving.AddTransition(PlayerActions.Hurt, damaged);
         moving.AddTransition(PlayerActions.Death, death);
 
@@ -90,6 +94,17 @@ public class Player : MonoBehaviour {
             _anim.Play("Death");
         };
 
+        //Defend
+        defend.OnEnter += () =>
+        {
+            _blocked = true;
+            _anim.Play("Block");
+        };
+        defend.AddTransition(PlayerActions.BlockingReady, idle);
+        defend.AddTransition(PlayerActions.Hurt, damaged);
+        defend.AddTransition(PlayerActions.Death, death);
+
+
         _fsm = new EventFSM<PlayerActions>(idle);
         #endregion
 
@@ -113,6 +128,11 @@ public class Player : MonoBehaviour {
         _controller.OnSteadyAxis += () =>
         {
             if (!_blocked) _fsm.Feed(PlayerActions.Steady);
+        };
+
+        _controller.OnDefendPressed += () =>
+        {
+            if (!_blocked) _fsm.Feed(PlayerActions.Blocking);
         };
         #endregion
     }
@@ -143,8 +163,28 @@ public class Player : MonoBehaviour {
         _fsm.Feed(PlayerActions.HurtReady);
     }
 
+    public void Blocking()
+    {
+        _defense = true;
+        print("REPUTO");
+    }
+
+    public void BlockingReady()
+    {
+        _defense = false;
+        _blocked = false;
+        print("PUTO");
+        _fsm.Feed(PlayerActions.BlockingReady);
+    }
+
     public void Damage(int amount)
     {
+        if (_defense)
+        {
+            print("Bloquea3");
+            return;
+        }
+
         if (!_damaged)
         {
             if (_currentHealth > 0)

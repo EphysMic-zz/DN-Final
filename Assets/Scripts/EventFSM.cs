@@ -69,7 +69,9 @@ public enum PlayerActions
     Hurt,
     AttackReady,
     HurtReady,
-    Death
+    Death,
+    Blocking,
+    BlockingReady
 }
 
 public enum EnemyActions
