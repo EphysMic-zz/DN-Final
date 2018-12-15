@@ -166,14 +166,12 @@ public class Player : MonoBehaviour {
     public void Blocking()
     {
         _defense = true;
-        print("REPUTO");
     }
 
     public void BlockingReady()
     {
         _defense = false;
         _blocked = false;
-        print("PUTO");
         _fsm.Feed(PlayerActions.BlockingReady);
     }
 
