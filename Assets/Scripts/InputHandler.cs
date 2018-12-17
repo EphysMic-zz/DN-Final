@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour {
 
     public event Action OnAttackPressed = delegate { };
     public event Action OnDefendPressed = delegate { };
+    public event Action OnSpellPressed = delegate { };
 
     public float verticalAxis
     {
@@ -44,5 +45,8 @@ public class InputHandler : MonoBehaviour {
 
         if (Input.GetButtonDown("Defend"))
             OnDefendPressed();
+
+        if (Input.GetButtonDown("Spell"))
+            OnSpellPressed();
     }
 }

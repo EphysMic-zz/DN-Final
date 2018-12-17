@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     InputHandler _controller;
     EventFSM<PlayerActions> _fsm;
@@ -22,7 +24,11 @@ public class Player : MonoBehaviour {
 
     bool _blocked;
 
-	void Start ()
+    [SerializeField] float _spellRange;
+    [SerializeField] int _spellDamage;
+    [SerializeField] ParticleSystem[] _spellParticles;
+
+    void Start()
     {
         _controller = FindObjectOfType<InputHandler>();
         _anim = GetComponent<Animator>();
@@ -35,6 +41,7 @@ public class Player : MonoBehaviour {
         var moving = new State<PlayerActions>("Moving");
         var attack = new State<PlayerActions>("Attack");
         var defend = new State<PlayerActions>("Defend");
+        var castSpell = new State<PlayerActions>("Cast");
         var damaged = new State<PlayerActions>("Damaged");
         var death = new State<PlayerActions>("Death");
 
@@ -43,6 +50,7 @@ public class Player : MonoBehaviour {
         idle.AddTransition(PlayerActions.Moved, moving);
         idle.AddTransition(PlayerActions.Attacked, attack);
         idle.AddTransition(PlayerActions.Blocking, defend);
+        idle.AddTransition(PlayerActions.Spell, castSpell);
         idle.AddTransition(PlayerActions.Hurt, damaged);
         idle.AddTransition(PlayerActions.Death, death);
 
@@ -52,13 +60,15 @@ public class Player : MonoBehaviour {
             transform.position += transform.forward * _controller.verticalAxis * _speed * Time.deltaTime;
 
             transform.Rotate(Vector3.up, _controller.horizontalAxis * _turnSpeed * Time.deltaTime);
-            
+
             _anim.SetFloat("Speed", _controller.verticalAxis);
             //_anim.SetFloat("HorizontalSpeed", _controller.horizontalAxis);
         };
+        moving.OnExit += () => _anim.SetFloat("Speed", 0);
         moving.AddTransition(PlayerActions.Steady, idle);
         moving.AddTransition(PlayerActions.Attacked, attack);
         moving.AddTransition(PlayerActions.Blocking, defend);
+        moving.AddTransition(PlayerActions.Spell, castSpell);
         moving.AddTransition(PlayerActions.Hurt, damaged);
         moving.AddTransition(PlayerActions.Death, death);
 
@@ -104,20 +114,29 @@ public class Player : MonoBehaviour {
         defend.AddTransition(PlayerActions.Hurt, damaged);
         defend.AddTransition(PlayerActions.Death, death);
 
+        //Spell
+        castSpell.OnEnter += () =>
+        {
+            _blocked = true;
+            _anim.Play("CastSpell");
+        };
+        castSpell.AddTransition(PlayerActions.SpellReady, idle);
+        castSpell.AddTransition(PlayerActions.Hurt, damaged);
+        castSpell.AddTransition(PlayerActions.Death, death);
 
         _fsm = new EventFSM<PlayerActions>(idle);
         #endregion
 
         #region Input Handler
 
-        _controller.OnHorizontalAxisChanged += x => 
+        _controller.OnHorizontalAxisChanged += x =>
         {
             if (!_blocked) _fsm.Feed(PlayerActions.Moved);
         };
 
         _controller.OnVerticalAxisChanged += x =>
         {
-            if(!_blocked) _fsm.Feed(PlayerActions.Moved);
+            if (!_blocked) _fsm.Feed(PlayerActions.Moved);
         };
 
         _controller.OnAttackPressed += () =>
@@ -134,14 +153,19 @@ public class Player : MonoBehaviour {
         {
             if (!_blocked) _fsm.Feed(PlayerActions.Blocking);
         };
+
+        _controller.OnSpellPressed += () =>
+        {
+            if (!_blocked) _fsm.Feed(PlayerActions.Spell);
+        };
         #endregion
     }
-	
-	void Update ()
+
+    void Update()
     {
-        if(_fsm != null)
+        if (_fsm != null)
             _fsm.Update();
-	}
+    }
 
     void Attack()
     {
@@ -175,6 +199,29 @@ public class Player : MonoBehaviour {
         _fsm.Feed(PlayerActions.BlockingReady);
     }
 
+    public void Spell()
+    {
+        var inRange = Physics.OverlapSphere(transform.position, _spellRange).
+                      Where(x => x.gameObject.GetComponent<Enemy>()).
+                      Select(x => x.gameObject.GetComponent<Enemy>());
+
+        foreach (var enemy in inRange)
+        {
+            enemy.Damage(_spellDamage);
+        }
+
+        foreach(var part in _spellParticles)
+        {
+            part.Play();
+        }
+    }
+
+    public void SpellReady()
+    {
+        _blocked = false;
+        _fsm.Feed(PlayerActions.SpellReady);
+    }
+
     public void Damage(int amount)
     {
         if (_defense)
@@ -193,5 +240,11 @@ public class Player : MonoBehaviour {
             else
                 _fsm.Feed(PlayerActions.Death);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _spellRange);
     }
 }

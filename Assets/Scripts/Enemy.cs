@@ -35,6 +35,6 @@ public class Enemy : MonoBehaviour {
 
     public virtual void Damage(int amount)
     {
-        _currentHealth--;
+        _currentHealth -= amount;
     }
 }
