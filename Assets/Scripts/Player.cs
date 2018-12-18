@@ -260,6 +260,20 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        if (_currentHealth <= _maxHealth)
+            return;
+
+        _currentHealth += amount;
+
+        if (_currentHealth < _maxHealth)
+        {
+            var diference = _currentHealth - _maxHealth;
+            _currentHealth -= diference;
+        }
+    }
+
     public void LearnSpell()
     {
         _controller.OnSpellPressed += () =>

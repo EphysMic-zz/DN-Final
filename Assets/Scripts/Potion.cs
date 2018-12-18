@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Potion : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField] int _amountOfHeal;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        var player = other.GetComponent<Player>();
+
+        if (player) player.Heal(_amountOfHeal);
+    }
 }
