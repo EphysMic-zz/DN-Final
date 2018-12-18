@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class Player : MonoBehaviour
     [SerializeField] float _spellRange;
     [SerializeField] int _spellDamage;
     [SerializeField] ParticleSystem[] _spellParticles;
+
+    public Action Interact = delegate { };
 
     void Start()
     {
@@ -57,12 +60,11 @@ public class Player : MonoBehaviour
         //Moving
         moving.OnUpdate += () =>
         {
-            transform.position += transform.forward * _controller.verticalAxis * _speed * Time.deltaTime;
+            if(!_blocked) transform.position += transform.forward * _controller.verticalAxis * _speed * Time.deltaTime;
 
-            transform.Rotate(Vector3.up, _controller.horizontalAxis * _turnSpeed * Time.deltaTime);
+            if (!_blocked) transform.Rotate(Vector3.up, _controller.horizontalAxis * _turnSpeed * Time.deltaTime);
 
             _anim.SetFloat("Speed", _controller.verticalAxis);
-            //_anim.SetFloat("HorizontalSpeed", _controller.horizontalAxis);
         };
         moving.OnExit += () => _anim.SetFloat("Speed", 0);
         moving.AddTransition(PlayerActions.Steady, idle);
@@ -154,9 +156,9 @@ public class Player : MonoBehaviour
             if (!_blocked) _fsm.Feed(PlayerActions.Blocking);
         };
 
-        _controller.OnSpellPressed += () =>
+        _controller.OnInteractPressed += () =>
         {
-            if (!_blocked) _fsm.Feed(PlayerActions.Spell);
+            if (!_blocked) Interact();
         };
         #endregion
     }
@@ -201,13 +203,24 @@ public class Player : MonoBehaviour
 
     public void Spell()
     {
-        var inRange = Physics.OverlapSphere(transform.position, _spellRange).
+        var cols = Physics.OverlapSphere(transform.position, _spellRange);
+
+        var enemies = cols.
                       Where(x => x.gameObject.GetComponent<Enemy>()).
                       Select(x => x.gameObject.GetComponent<Enemy>());
 
-        foreach (var enemy in inRange)
+        var barriers = cols.
+                       Where(x => x.gameObject.GetComponent<Barrier>()).
+                       Select(x => x.gameObject.GetComponent<Barrier>());
+
+        foreach (var enemy in enemies)
         {
             enemy.Damage(_spellDamage);
+        }
+
+        foreach (var barrier in barriers)
+        {
+            barrier.Disable();
         }
 
         foreach(var part in _spellParticles)
@@ -220,6 +233,11 @@ public class Player : MonoBehaviour
     {
         _blocked = false;
         _fsm.Feed(PlayerActions.SpellReady);
+
+        foreach (var part in _spellParticles)
+        {
+            part.Stop();
+        }
     }
 
     public void Damage(int amount)
@@ -240,6 +258,17 @@ public class Player : MonoBehaviour
             else
                 _fsm.Feed(PlayerActions.Death);
         }
+    }
+
+    public void LearnSpell()
+    {
+        _controller.OnSpellPressed += () =>
+        {
+            if (!_blocked) _fsm.Feed(PlayerActions.Spell);
+        };
+
+        _anim.Play("Examine");
+        _blocked = true;
     }
 
     private void OnDrawGizmosSelected()

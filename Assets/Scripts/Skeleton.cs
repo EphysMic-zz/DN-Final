@@ -26,6 +26,7 @@ public class Skeleton : Enemy {
         //Idle
         idle.OnEnter += () => _anim.Play("Idle");
         idle.AddTransition(EnemyActions.PlayerInSight, chasing);
+        idle.AddTransition(EnemyActions.PlayerOutOfInterest, chasing);
 
         //Chasing
         float _timeToUpdatePath = 0;
@@ -56,12 +57,7 @@ public class Skeleton : Enemy {
         chasing.AddTransition(EnemyActions.PlayerInRange, attacking);
 
         //Attacking
-        attacking.OnEnter += () =>
-        {
-            _anim.Play("Attack");
-            Attack();
-        };
-        float _timeToAttack = 0;
+        float _timeToAttack = _onTimeToAttack;
         attacking.OnUpdate += () =>
         {
             _timeToAttack += Time.deltaTime;
@@ -75,10 +71,8 @@ public class Skeleton : Enemy {
         };
         attacking.OnExit += () =>
         {
-            _timeToAttack = 0;
             _sword.GetComponent<Collider>().enabled = false;
         };
-
         attacking.AddTransition(EnemyActions.PlayerOutOfRange, chasing);
         attacking.AddTransition(EnemyActions.PlayerOutOfInterest, idle);
 
