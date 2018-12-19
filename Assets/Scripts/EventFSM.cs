@@ -82,7 +82,8 @@ public enum EnemyActions
     PlayerOutOfInterest,
     PlayerInRange,
     PlayerOutOfRange,
-    Death
+    Death,
+    Damaged
 }
 
 public enum BossActions

@@ -16,6 +16,8 @@ public class Skeleton : Enemy {
 
     Sword _sword;
 
+    public string currentState;
+
 	// Use this for initialization
 	protected override void Start ()
     {
@@ -33,7 +35,7 @@ public class Skeleton : Enemy {
         //Idle
         idle.OnEnter += () => _anim.Play("Idle");
         idle.AddTransition(EnemyActions.PlayerInSight, chasing);
-        idle.AddTransition(EnemyActions.PlayerOutOfInterest, chasing);
+        idle.AddTransition(EnemyActions.Damaged, chasing);
 
         //Chasing
         float _timeToUpdatePath = 0;
@@ -103,6 +105,8 @@ public class Skeleton : Enemy {
             _fsm.Feed(EnemyActions.PlayerInRange);
         else
             _fsm.Feed(EnemyActions.PlayerOutOfRange);
+
+        currentState = _fsm.current.name;
 	}
 
     private void OnDrawGizmosSelected()
@@ -150,7 +154,7 @@ public class Skeleton : Enemy {
     {
         base.Damage(amount);
 
-        _fsm.Feed(EnemyActions.PlayerOutOfInterest);
+        _fsm.Feed(EnemyActions.Damaged);
 
         if (_currentHealth <= 0)
             gameObject.SetActive(false);

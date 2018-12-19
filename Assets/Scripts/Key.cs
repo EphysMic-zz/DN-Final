@@ -60,6 +60,8 @@ public class Key : MonoBehaviour
             {
                 rotating = false;
                 _door.Open();
+
+                FindObjectOfType<Messages>().UpdateQuote("Look! That big door just opened.");
             }
         }
     }

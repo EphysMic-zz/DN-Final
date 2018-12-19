@@ -44,6 +44,8 @@ public class Gem : MonoBehaviour {
 
             _boss.gameObject.SetActive(true);
 
+            FindObjectOfType<Messages>().UpdateQuote("The symbol you make when you hit the ground seems the same as the one in the library...");
+
             Destroy(this);
         }
 	}
