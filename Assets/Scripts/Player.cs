@@ -33,10 +33,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] float _spellRange;
     [SerializeField] int _spellDamage;
-    [SerializeField] ParticleSystem[] _spellParticles;
 
     public Action Interact = delegate { };
     public event Action OnPlayerDeath = delegate { };
+
+    [SerializeField] ParticleSystem[] _spellFX;
+    [SerializeField] ParticleSystem[] _healFX;
+    [SerializeField] ParticleSystem[] _parryFX;
 
     void Start()
     {
@@ -168,6 +171,11 @@ public class Player : MonoBehaviour
             if (!_blocked) _fsm.Feed(PlayerActions.Blocking);
         };
 
+        _controller.OnSpellPressed += () =>
+        {
+            if (!_blocked) _fsm.Feed(PlayerActions.Spell);
+        };
+
         _controller.OnInteractPressed += () =>
         {
             if (!_blocked) Interact();
@@ -235,7 +243,7 @@ public class Player : MonoBehaviour
             barrier.Disable();
         }
 
-        foreach(var part in _spellParticles)
+        foreach(var part in _spellFX)
         {
             part.Play();
         }
@@ -246,7 +254,7 @@ public class Player : MonoBehaviour
         _blocked = false;
         _fsm.Feed(PlayerActions.SpellReady);
 
-        foreach (var part in _spellParticles)
+        foreach (var part in _spellFX)
         {
             part.Stop();
         }
@@ -256,7 +264,10 @@ public class Player : MonoBehaviour
     {
         if (_defense)
         {
-            print("Bloquea3");
+            foreach (var fx in _parryFX)
+            {
+                fx.Play();
+            }
             return;
         }
 
@@ -297,6 +308,11 @@ public class Player : MonoBehaviour
         Destroy(Physics.OverlapSphere(transform.position, 1)
                 .Where(x => x.GetComponent<Potion>() != null)
                 .Select(x => x.GetComponent<Potion>()).First().gameObject);
+
+        foreach (var fx in _healFX)
+        {
+            fx.Play();
+        }
 
         if (_currentHealth > _maxHealth)
         {
