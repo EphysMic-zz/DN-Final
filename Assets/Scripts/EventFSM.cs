@@ -58,7 +58,6 @@ public class State<TFeed>
     {
         this.name = name;
     }
-
 }
 
 public enum PlayerActions
@@ -83,4 +82,15 @@ public enum EnemyActions
     PlayerInRange,
     PlayerOutOfRange,
     Death
+}
+
+public enum BossActions
+{
+    StartMoving,
+    Moved,
+    Shooted,
+    Damaged,
+    Death,
+    DoneShooting,
+    StartBattle
 }

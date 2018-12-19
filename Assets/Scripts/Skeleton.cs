@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Skeleton : Enemy {
 
-    [SerializeField] float _rangeOfVision;
-    [SerializeField] float _angleOfVision;
+    EventFSM<EnemyActions> _fsm;
+
+    [SerializeField] protected float _onTimeToUpdatePath;
+
+    [SerializeField] protected float _onTimeToAttack;
+    [SerializeField] protected float _rangeToAttack;
+
+    [SerializeField] float _rangeOfVision = 15;
+    [SerializeField] float _angleOfVision = 90;
 
     Sword _sword;
 
@@ -146,7 +153,7 @@ public class Skeleton : Enemy {
         _fsm.Feed(EnemyActions.PlayerOutOfInterest);
 
         if (_currentHealth <= 0)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         else
             StartCoroutine(DamageBlink());
     }

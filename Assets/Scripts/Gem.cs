@@ -9,11 +9,15 @@ public class Gem : MonoBehaviour {
 
     [SerializeField] Barrier[] _barriers;
     [SerializeField] Enemy[] _enemies;
+    Necromancer _boss;
 
 	// Use this for initialization
 	void Start ()
     {
         _player = FindObjectOfType<Player>();
+        _boss = FindObjectOfType<Necromancer>();
+
+        _boss.gameObject.SetActive(false);
 
         foreach (var enemy in _enemies)
         {
@@ -37,6 +41,8 @@ public class Gem : MonoBehaviour {
             {
                 enemy.gameObject.SetActive(true);
             }
+
+            _boss.gameObject.SetActive(true);
 
             Destroy(this);
         }

@@ -5,16 +5,21 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
-    protected EventFSM<EnemyActions> _fsm;
     protected Player _player;
     protected NavMeshAgent _navMesh;
-    [SerializeField] protected float _onTimeToUpdatePath;
-
-    [SerializeField] protected float _onTimeToAttack;
-    [SerializeField] protected float _rangeToAttack;
 
     [SerializeField] protected int _maxHealth;
     [SerializeField] protected int _currentHealth;
+
+    public int MaxHealth
+    {
+        get { return _maxHealth; }
+    }
+
+    public int Health
+    {
+        set { _currentHealth = value; }
+    }
 
     protected Animator _anim;
 

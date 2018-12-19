@@ -6,6 +6,6 @@ public class Barrier : MonoBehaviour
 {
     public void Disable()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

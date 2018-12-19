@@ -262,12 +262,17 @@ public class Player : MonoBehaviour
 
     public void Heal(int amount)
     {
-        if (_currentHealth <= _maxHealth)
+        if (_currentHealth >= _maxHealth)
             return;
 
         _currentHealth += amount;
 
-        if (_currentHealth < _maxHealth)
+        //Destruccion de la botella 
+        Destroy(Physics.OverlapSphere(transform.position, 1)
+                .Where(x => x.GetComponent<Potion>() != null)
+                .Select(x => x.GetComponent<Potion>()).First().gameObject);
+
+        if (_currentHealth > _maxHealth)
         {
             var diference = _currentHealth - _maxHealth;
             _currentHealth -= diference;
