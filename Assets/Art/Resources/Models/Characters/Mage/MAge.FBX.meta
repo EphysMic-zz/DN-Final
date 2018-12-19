@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: 0c0a8863f77cc3b4b8ec172848f8a853
+timeCreated: 1539349833
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Hood
+    100002: Legs
+    100004: //RootNode
+    100006: MageRig_Back_Tail1
+    100008: MageRig_Back_Tail2
+    100010: MageRig_Back_Tail3
+    100012: MageRig_Chest
+    100014: MageRig_Head
+    100016: MageRig_HoodBone1
+    100018: MageRig_HoodBone2
+    100020: MageRig_HoodLeftArmBone
+    100022: MageRig_HoodLeftArmBone 1
+    100024: MageRig_Left_Tile1
+    100026: MageRig_Left_Tile2
+    100028: MageRig_Left_Tile3
+    100030: MageRig_LeftArm1
+    100032: MageRig_LeftArm2
+    100034: MageRig_LeftArmCollarbone
+    100036: MageRig_LeftArmFinger1_1
+    100038: MageRig_LeftArmFinger1_2
+    100040: MageRig_LeftArmFinger2_1
+    100042: MageRig_LeftArmFinger2_2
+    100044: MageRig_LeftArmFinger2_3
+    100046: MageRig_LeftArmFinger3_1
+    100048: MageRig_LeftArmFinger3_2
+    100050: MageRig_LeftArmFinger3_3
+    100052: MageRig_LeftArmFinger4_1
+    100054: MageRig_LeftArmFinger4_2
+    100056: MageRig_LeftArmFinger4_3
+    100058: MageRig_LeftArmFinger5_1
+    100060: MageRig_LeftArmFinger5_2
+    100062: MageRig_LeftArmFinger5_3
+    100064: MageRig_LeftArmPalm
+    100066: MageRig_LeftLeg1
+    100068: MageRig_LeftLeg2
+    100070: MageRig_LeftLegAnkle
+    100072: MageRig_LeftLegDigit11
+    100074: MageRig_Middel_Tail1
+    100076: MageRig_Middel_Tail2
+    100078: MageRig_Middel_Tail3
+    100080: MageRig_Neck
+    100082: MageRig_Pelvis
+    100084: MageRig_Right_Tail1
+    100086: MageRig_Right_Tail2
+    100088: MageRig_Right_Tail3
+    100090: MageRig_RightArm1
+    100092: MageRig_RightArm2
+    100094: MageRig_RightArmCollarbone
+    100096: MageRig_RightArmFinger1_1
+    100098: MageRig_RightArmFinger1_2
+    100100: MageRig_RightArmFinger2_1
+    100102: MageRig_RightArmFinger2_2
+    100104: MageRig_RightArmFinger2_3
+    100106: MageRig_RightArmFinger3_1
+    100108: MageRig_RightArmFinger3_2
+    100110: MageRig_RightArmFinger3_3
+    100112: MageRig_RightArmFinger4_1
+    100114: MageRig_RightArmFinger4_2
+    100116: MageRig_RightArmFinger4_3
+    100118: MageRig_RightArmFinger5_1
+    100120: MageRig_RightArmFinger5_2
+    100122: MageRig_RightArmFinger5_3
+    100124: MageRig_RightArmPalm
+    100126: MageRig_RightLeg1
+    100128: MageRig_RightLeg2
+    100130: MageRig_RightLegAnkle
+    100132: MageRig_RightLegDigit11
+    100134: MageRig_Spine1
+    100136: MageRig_Spine2
+    100138: MageRig_Spine3
+    100140: Tails
+    400000: Hood
+    400002: Legs
+    400004: //RootNode
+    400006: MageRig_Back_Tail1
+    400008: MageRig_Back_Tail2
+    400010: MageRig_Back_Tail3
+    400012: MageRig_Chest
+    400014: MageRig_Head
+    400016: MageRig_HoodBone1
+    400018: MageRig_HoodBone2
+    400020: MageRig_HoodLeftArmBone
+    400022: MageRig_HoodLeftArmBone 1
+    400024: MageRig_Left_Tile1
+    400026: MageRig_Left_Tile2
+    400028: MageRig_Left_Tile3
+    400030: MageRig_LeftArm1
+    400032: MageRig_LeftArm2
+    400034: MageRig_LeftArmCollarbone
+    400036: MageRig_LeftArmFinger1_1
+    400038: MageRig_LeftArmFinger1_2
+    400040: MageRig_LeftArmFinger2_1
+    400042: MageRig_LeftArmFinger2_2
+    400044: MageRig_LeftArmFinger2_3
+    400046: MageRig_LeftArmFinger3_1
+    400048: MageRig_LeftArmFinger3_2
+    400050: MageRig_LeftArmFinger3_3
+    400052: MageRig_LeftArmFinger4_1
+    400054: MageRig_LeftArmFinger4_2
+    400056: MageRig_LeftArmFinger4_3
+    400058: MageRig_LeftArmFinger5_1
+    400060: MageRig_LeftArmFinger5_2
+    400062: MageRig_LeftArmFinger5_3
+    400064: MageRig_LeftArmPalm
+    400066: MageRig_LeftLeg1
+    400068: MageRig_LeftLeg2
+    400070: MageRig_LeftLegAnkle
+    400072: MageRig_LeftLegDigit11
+    400074: MageRig_Middel_Tail1
+    400076: MageRig_Middel_Tail2
+    400078: MageRig_Middel_Tail3
+    400080: MageRig_Neck
+    400082: MageRig_Pelvis
+    400084: MageRig_Right_Tail1
+    400086: MageRig_Right_Tail2
+    400088: MageRig_Right_Tail3
+    400090: MageRig_RightArm1
+    400092: MageRig_RightArm2
+    400094: MageRig_RightArmCollarbone
+    400096: MageRig_RightArmFinger1_1
+    400098: MageRig_RightArmFinger1_2
+    400100: MageRig_RightArmFinger2_1
+    400102: MageRig_RightArmFinger2_2
+    400104: MageRig_RightArmFinger2_3
+    400106: MageRig_RightArmFinger3_1
+    400108: MageRig_RightArmFinger3_2
+    400110: MageRig_RightArmFinger3_3
+    400112: MageRig_RightArmFinger4_1
+    400114: MageRig_RightArmFinger4_2
+    400116: MageRig_RightArmFinger4_3
+    400118: MageRig_RightArmFinger5_1
+    400120: MageRig_RightArmFinger5_2
+    400122: MageRig_RightArmFinger5_3
+    400124: MageRig_RightArmPalm
+    400126: MageRig_RightLeg1
+    400128: MageRig_RightLeg2
+    400130: MageRig_RightLegAnkle
+    400132: MageRig_RightLegDigit11
+    400134: MageRig_Spine1
+    400136: MageRig_Spine2
+    400138: MageRig_Spine3
+    400140: Tails
+    2100000: 19 - Default
+    2100002: 08 - Default
+    2100004: 'Material #147'
+    2100006: 'Material #148'
+    4300000: Legs
+    4300002: Tails
+    4300004: Hood
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Hood
+    13700002: Legs
+    13700004: Tails
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
