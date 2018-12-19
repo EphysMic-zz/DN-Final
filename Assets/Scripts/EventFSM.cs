@@ -72,7 +72,8 @@ public enum PlayerActions
     Blocking,
     BlockingReady,
     Spell,
-    SpellReady
+    SpellReady,
+    Revive
 }
 
 public enum EnemyActions

@@ -6,7 +6,6 @@ using System;
 
 public class Player : MonoBehaviour
 {
-
     InputHandler _controller;
     EventFSM<PlayerActions> _fsm;
 
@@ -20,16 +19,24 @@ public class Player : MonoBehaviour
 
     [SerializeField] int _currentHealth;
     [SerializeField] int _maxHealth;
+    [SerializeField] float _dieTime;
     bool _damaged;
     bool _defense;
 
+    public int Health
+    {
+        get { return _currentHealth; }
+    }
+
     bool _blocked;
+    public Checkpoint latestCheckpoint;
 
     [SerializeField] float _spellRange;
     [SerializeField] int _spellDamage;
     [SerializeField] ParticleSystem[] _spellParticles;
 
     public Action Interact = delegate { };
+    public event Action OnPlayerDeath = delegate { };
 
     void Start()
     {
@@ -80,7 +87,9 @@ public class Player : MonoBehaviour
             Attack();
             _anim.Play("Attack");
         };
+        attack.OnExit += () => _sword.GetComponent<Collider>().enabled = false;
         attack.AddTransition(PlayerActions.AttackReady, idle);
+        attack.AddTransition(PlayerActions.Blocking, defend);       
         attack.AddTransition(PlayerActions.Hurt, damaged);
         attack.AddTransition(PlayerActions.Death, death);
 
@@ -104,7 +113,10 @@ public class Player : MonoBehaviour
         {
             _blocked = true;
             _anim.Play("Death");
+            StartCoroutine(DelayedDie());
         };
+        death.OnExit += () => _blocked = false;
+        death.AddTransition(PlayerActions.Revive, idle);
 
         //Defend
         defend.OnEnter += () =>
@@ -171,7 +183,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        _blocked = true;
+        //_blocked = true;
         _sword.GetComponent<Collider>().enabled = true;
     }
 
@@ -258,6 +270,20 @@ public class Player : MonoBehaviour
             else
                 _fsm.Feed(PlayerActions.Death);
         }
+    }
+
+    void Die()
+    {
+        _fsm.Feed(PlayerActions.Revive);
+        _currentHealth = latestCheckpoint.currentHealth;
+        transform.position = latestCheckpoint.transform.position;
+    }
+
+    IEnumerator DelayedDie()
+    {
+        yield return new WaitForSeconds(_dieTime);
+        Die();
+        OnPlayerDeath();
     }
 
     public void Heal(int amount)

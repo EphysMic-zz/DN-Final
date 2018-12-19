@@ -108,6 +108,18 @@ public class Necromancer : Enemy
 
         _fsm = new EventFSM<BossActions>(waiting);
         #endregion
+
+        var initialPosition = transform.position;
+        _player.OnPlayerDeath += () =>
+        {
+            _fsm = new EventFSM<BossActions>(waiting);
+            transform.position = initialPosition;
+            _currentShots = 0;
+            _targetShots = UnityEngine.Random.Range(_minAmountOfShots, _maxAmountOfShots);
+            _currentHealth = _maxHealth;
+            DisableBarriers();
+            DisableSkeletons();
+        };
     }
 
     // Update is called once per frame
@@ -178,6 +190,14 @@ public class Necromancer : Enemy
             _skeletons[i].transform.position = _skeletonPositions[i];
             _skeletons[i].Health = _skeletons[i].MaxHealth;
             _skeletons[i].transform.LookAt(_player.transform);
+        }
+    }
+
+    void DisableSkeletons()
+    {
+        foreach (var skeleton in _skeletons)
+        {
+            skeleton.gameObject.SetActive(false);
         }
     }
 
