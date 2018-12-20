@@ -10,17 +10,17 @@ public class Key : MonoBehaviour
 
     [SerializeField] float _interactRange = .1f;
     bool _registered;
-    [SerializeField] Transform _otherKey;
     Door _door;
 
-    public bool rotating;
-    [SerializeField] Vector3 _rotationOffset;
-    [SerializeField] float _rotateSpeed;
-    float _rotation;
+    public bool coloring;
+    [SerializeField] float _colorateSpeed;
+    float _colorAmount;
+
+    [SerializeField] GameObject _interactUI;
 
     public void InteractWithKey()
     {
-        rotating = true;
+        coloring = true;
     }
 
     void Start()
@@ -38,6 +38,7 @@ public class Key : MonoBehaviour
             {
                 _registered = true;
                 _player.Interact += InteractWithKey;
+                _interactUI.SetActive(true);
             }
         }
 
@@ -47,21 +48,21 @@ public class Key : MonoBehaviour
             {
                 _registered = false;
                 _player.Interact -= InteractWithKey;
+                _interactUI.SetActive(false);
             }
         }
 
-        if (rotating)
+        if (coloring)
         {
-            transform.Rotate(transform.forward, _rotateSpeed * Time.deltaTime);
-            _otherKey.Rotate(transform.forward, _rotateSpeed * Time.deltaTime);
-            _rotation += _rotateSpeed * Time.deltaTime;
+            var mat = GetComponent<Renderer>().sharedMaterial;
+            _colorAmount += Time.deltaTime * _colorateSpeed;
 
-            if (_rotation >= 90)
+            mat.color = Color.LerpUnclamped(Color.red, Color.green, _colorAmount);
+
+            if(_colorAmount >= 10)
             {
-                rotating = false;
                 _door.Open();
-
-                FindObjectOfType<Messages>().UpdateQuote("Look! That big door just opened.");
+                coloring = false;
             }
         }
     }

@@ -2174,7 +2174,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _energyBallPrefab: {fileID: 114447950914818918, guid: b838ac99f42dd7c41ba102cee9ad13f1,
+  _energyBallPrefab: {fileID: 114124128342863130, guid: 04beeac8fe095ff41b69e29a153042e9,
     type: 2}
   _shootPoint: {fileID: 4044532584766506}
   _minAmountOfShots: 3

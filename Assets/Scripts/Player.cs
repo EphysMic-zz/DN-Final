@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     Animator _anim;
     Rigidbody _rb;
 
+    [SerializeField] GameObject _mouseMiddleBButton;
+
     [SerializeField] float _speed;
     [SerializeField] float _turnSpeed;
 
@@ -171,11 +173,6 @@ public class Player : MonoBehaviour
             if (!_blocked) _fsm.Feed(PlayerActions.Blocking);
         };
 
-        _controller.OnSpellPressed += () =>
-        {
-            if (!_blocked) _fsm.Feed(PlayerActions.Spell);
-        };
-
         _controller.OnInteractPressed += () =>
         {
             if (!_blocked) Interact();
@@ -328,13 +325,25 @@ public class Player : MonoBehaviour
             if (!_blocked) _fsm.Feed(PlayerActions.Spell);
         };
 
-        _anim.Play("Examine");
-        _blocked = true;
+        /*_anim.Play("Examine");
+        _blocked = true;*/
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _spellRange);
+    }
+
+    public void EstoyDesesperando()
+    {
+        _mouseMiddleBButton.SetActive(true);
+        StartCoroutine(LaPutaMadre());
+    }
+
+    IEnumerator LaPutaMadre()
+    {
+        yield return new WaitForSeconds(5);
+        _mouseMiddleBButton.SetActive(false);
     }
 }
