@@ -1056,13 +1056,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2881834aa0f0fe14e9dda3e4186cd0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 2
+  _currentHealth: 0
   _onTimeToUpdatePath: 0.2
   _onTimeToAttack: 2
   _rangeToAttack: 1.5
-  _maxHealth: 2
-  _currentHealth: 0
   _rangeOfVision: 15
   _angleOfVision: 90
+  currentState: 
 --- !u!114 &114757211397343842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1089,8 +1090,8 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 286bfe7af7bc3674b8c59fbc601e9291, type: 2}
-  - {fileID: 2100000, guid: e5e81676514139d4c85683994e6378df, type: 2}
+  - {fileID: 2100000, guid: 1bc214b98e782f54bbf35f2a9368511b, type: 2}
+  - {fileID: 2100000, guid: 834e54583bde4c44181302f5c6a9cd88, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

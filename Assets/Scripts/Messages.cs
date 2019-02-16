@@ -21,7 +21,7 @@ public class Messages : MonoBehaviour {
         _player = FindObjectOfType<Player>();
         _text = GetComponent<TextMesh>();
 
-        _currentQuote = "We need that necromancer's book. Maybe we should check in the library";
+        _currentQuote = "We need that necromancer's book. \n Maybe we should check in the library";
 
         FindObjectOfType<Necromancer>().OnBossDeath += () =>
         {
