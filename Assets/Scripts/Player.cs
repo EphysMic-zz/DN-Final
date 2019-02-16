@@ -30,6 +30,11 @@ public class Player : MonoBehaviour
         get { return _currentHealth; }
     }
 
+    public int MaxHealth
+    {
+        get { return _maxHealth; }
+    }
+
     bool _blocked;
     public Checkpoint latestCheckpoint;
 
@@ -38,6 +43,7 @@ public class Player : MonoBehaviour
 
     public Action Interact = delegate { };
     public event Action OnPlayerDeath = delegate { };
+    public event Action<float> OnPlayerHealthChanged = delegate { };
 
     [SerializeField] ParticleSystem[] _spellFX;
     [SerializeField] ParticleSystem[] _healFX;
@@ -273,6 +279,7 @@ public class Player : MonoBehaviour
             if (_currentHealth > 0)
             {
                 _currentHealth -= amount;
+                OnPlayerHealthChanged(_currentHealth);
                 _fsm.Feed(PlayerActions.Hurt);
             }
             else
@@ -300,6 +307,7 @@ public class Player : MonoBehaviour
             return;
 
         _currentHealth += amount;
+        OnPlayerHealthChanged(_currentHealth);
 
         //Destruccion de la botella 
         Destroy(Physics.OverlapSphere(transform.position, 1)

@@ -9,6 +9,7 @@ public class Necromancer : Enemy
     EventFSM<BossActions> _fsm;
 
     [SerializeField] Barrier[] _barriers;
+    [SerializeField] FireTrap[] _fireWalls;
 
     [SerializeField] Skeleton[] _skeletons;
     Vector3[] _skeletonPositions;
@@ -103,6 +104,8 @@ public class Necromancer : Enemy
         death.OnEnter += () =>
         {
             _anim.Play("Die");
+            foreach (var firewall in _fireWalls)
+                firewall.gameObject.SetActive(false);
             OnBossDeath();
         };
 
@@ -130,6 +133,10 @@ public class Necromancer : Enemy
         if (Vector3.Distance(transform.position, _player.transform.position) < _rangeToBeginBattle)
         {
             _fsm.Feed(BossActions.StartBattle);
+
+            foreach (var firewall in _fireWalls)
+                firewall.gameObject.SetActive(true);
+            
             _rangeToBeginBattle = 0;
         }
 
@@ -212,6 +219,9 @@ public class Necromancer : Enemy
             _anim.Play("GetHit");
         }
         else
+        {
             _fsm.Feed(BossActions.Death);
+            
+        }
     }
 }
