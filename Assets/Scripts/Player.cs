@@ -276,14 +276,18 @@ public class Player : MonoBehaviour
 
         if (!_damaged)
         {
-            if (_currentHealth > 0)
+            if (_currentHealth > 1)
             {
                 _currentHealth -= amount;
                 OnPlayerHealthChanged(_currentHealth);
                 _fsm.Feed(PlayerActions.Hurt);
             }
             else
+            {
+                _currentHealth -= amount;
+                OnPlayerHealthChanged(_currentHealth);
                 _fsm.Feed(PlayerActions.Death);
+            }
         }
     }
 

@@ -155,22 +155,21 @@ public class Necromancer : Enemy
 
     void Shoot()
     {
+        if (_currentShots >= _targetShots)
+        {
+            _fsm.Feed(BossActions.DoneShooting);
+            _currentShots = 0;
+            _targetShots = UnityEngine.Random.Range(_minAmountOfShots, _maxAmountOfShots);
+            return;
+        }
         transform.LookAt(_player.transform);
 
         var energyBall = Instantiate(_energyBallPrefab);
         energyBall.transform.position = _shootPoint.position;
         energyBall.transform.forward = transform.forward;
 
-        _currentShots++;
-
-        if (_currentShots >= _targetShots)
-        {
-            _fsm.Feed(BossActions.DoneShooting);
-            _currentShots = 0;
-            _targetShots = UnityEngine.Random.Range(_minAmountOfShots, _maxAmountOfShots);
-        }
-        else
-            _fsm.Feed(BossActions.Shooted);
+        _currentShots++;        
+        _fsm.Feed(BossActions.Shooted);
     }
 
     void SpawnBarriers()

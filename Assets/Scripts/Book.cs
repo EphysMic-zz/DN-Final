@@ -8,11 +8,15 @@ public class Book : MonoBehaviour {
     Player _player;
 
     [SerializeField] float _rangeToInteract;
+    public GameObject fireWall;
 
 	// Use this for initialization
 	void Start ()
     {
-        FindObjectOfType<Necromancer>().OnBossDeath += () => _pickeable = true;
+        var necro = FindObjectOfType<Necromancer>();
+        necro.OnBossDeath += () => _pickeable = true;
+        necro.OnBossDeath += () => fireWall.SetActive(true);
+
         _player = FindObjectOfType<Player>();
 	}
 	
@@ -23,6 +27,7 @@ public class Book : MonoBehaviour {
         {
             if(Vector3.Distance(_player.transform.position, transform.position) < _rangeToInteract)
             {
+                Destroy(fireWall);
                 Destroy(gameObject);
             }
         }

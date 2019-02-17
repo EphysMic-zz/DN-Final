@@ -14,6 +14,8 @@ public class Skeleton : Enemy {
     [SerializeField] float _rangeOfVision = 15;
     [SerializeField] float _angleOfVision = 90;
 
+    ParticleSystem _dustParticles;
+
     Sword _sword;
 
     public string currentState;
@@ -22,6 +24,8 @@ public class Skeleton : Enemy {
 	protected override void Start ()
     {
         base.Start();
+
+        //_dustParticles = GetComponentInChildren<ParticleSystem>();
 
         _sword = GetComponentInChildren<Sword>();
 
@@ -36,6 +40,7 @@ public class Skeleton : Enemy {
         idle.OnEnter += () => _anim.Play("Idle");
         idle.AddTransition(EnemyActions.PlayerInSight, chasing);
         idle.AddTransition(EnemyActions.Damaged, chasing);
+        idle.AddTransition(EnemyActions.Death, dead);
 
         //Chasing
         float _timeToUpdatePath = 0;
@@ -64,6 +69,7 @@ public class Skeleton : Enemy {
         };
         chasing.AddTransition(EnemyActions.PlayerOutOfInterest, idle);
         chasing.AddTransition(EnemyActions.PlayerInRange, attacking);
+        chasing.AddTransition(EnemyActions.Death, dead);
 
         //Attacking
         float _timeToAttack = _onTimeToAttack;
@@ -84,6 +90,7 @@ public class Skeleton : Enemy {
         };
         attacking.AddTransition(EnemyActions.PlayerOutOfRange, chasing);
         attacking.AddTransition(EnemyActions.PlayerOutOfInterest, idle);
+        attacking.AddTransition(EnemyActions.Death, dead);
 
 
         _fsm = new EventFSM<EnemyActions>(idle);
@@ -157,9 +164,13 @@ public class Skeleton : Enemy {
         _fsm.Feed(EnemyActions.Damaged);
 
         if (_currentHealth <= 0)
-            gameObject.SetActive(false);
-        else
-            StartCoroutine(DamageBlink());
+        {
+            //_dustParticles.Play();
+            StartCoroutine(Dissolve());
+            _fsm.Feed(EnemyActions.Death);
+        }
+        //else
+            //StartCoroutine(DamageBlink());
     }
 
     IEnumerator DamageBlink()
@@ -170,5 +181,24 @@ public class Skeleton : Enemy {
         yield return new WaitForSeconds(.1f);
 
         GetComponentInChildren<Renderer>().material.color = matColor;
+    }
+
+    IEnumerator Dissolve()
+    {
+        var dissolveMats = GetComponentInChildren<Renderer>().materials;
+        float amount = 0;
+
+        while (dissolveMats[0].GetFloat("_DissolveAmount") < 1)
+        {
+            foreach (var mat in dissolveMats)
+            {
+                mat.SetFloat("_DissolveAmount", amount);
+            }
+
+            yield return null;
+            amount += Time.deltaTime;
+        }
+
+        gameObject.SetActive(false);
     }
 }
