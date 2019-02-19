@@ -358,4 +358,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5);
         _mouseMiddleBButton.SetActive(false);
     }
+
+    public void SetBlocked(bool b)
+    {
+        _blocked = b;
+    }
 }

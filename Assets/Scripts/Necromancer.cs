@@ -193,8 +193,12 @@ public class Necromancer : Enemy
         for (int i = 0; i < _skeletons.Length; i++)
         {
             _skeletons[i].gameObject.SetActive(true);
+            _skeletons[i].Appear();
             _skeletons[i].transform.position = _skeletonPositions[i];
             _skeletons[i].Health = _skeletons[i].MaxHealth;
+
+            if (_skeletons[i].currentState == "Dead") _skeletons[i].Reborn();
+
             _skeletons[i].transform.LookAt(_player.transform);
         }
     }

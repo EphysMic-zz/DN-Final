@@ -25,7 +25,7 @@ public class Skeleton : Enemy {
     {
         base.Start();
 
-        //_dustParticles = GetComponentInChildren<ParticleSystem>();
+        _dustParticles = GetComponentInChildren<ParticleSystem>();
 
         _sword = GetComponentInChildren<Sword>();
 
@@ -91,6 +91,9 @@ public class Skeleton : Enemy {
         attacking.AddTransition(EnemyActions.PlayerOutOfRange, chasing);
         attacking.AddTransition(EnemyActions.PlayerOutOfInterest, idle);
         attacking.AddTransition(EnemyActions.Death, dead);
+
+        //Dead
+        dead.AddTransition(EnemyActions.Reborn, idle);
 
 
         _fsm = new EventFSM<EnemyActions>(idle);
@@ -165,22 +168,17 @@ public class Skeleton : Enemy {
 
         if (_currentHealth <= 0)
         {
-            //_dustParticles.Play();
+            _dustParticles.Play();
             StartCoroutine(Dissolve());
             _fsm.Feed(EnemyActions.Death);
         }
-        //else
-            //StartCoroutine(DamageBlink());
+        else
+            _dustParticles.Play();
     }
 
-    IEnumerator DamageBlink()
+    public void Reborn()
     {
-        var matColor = GetComponentInChildren<Renderer>().material.color;
-        GetComponentInChildren<Renderer>().material.color = Color.red;
-
-        yield return new WaitForSeconds(.1f);
-
-        GetComponentInChildren<Renderer>().material.color = matColor;
+        _fsm.Feed(EnemyActions.Reborn);
     }
 
     IEnumerator Dissolve()
@@ -200,5 +198,27 @@ public class Skeleton : Enemy {
         }
 
         gameObject.SetActive(false);
+    }
+
+    public void Appear()
+    {
+        StartCoroutine(InDissolve());
+    }
+
+    IEnumerator InDissolve()
+    {
+        var dissolveMats = GetComponentInChildren<Renderer>().materials;
+        float amount = 1;
+
+        while (dissolveMats[1].GetFloat("_DissolveAmount") > 0)
+        {
+            foreach (var mat in dissolveMats)
+            {
+                mat.SetFloat("_DissolveAmount", amount);
+            }
+
+            yield return null;
+            amount -= Time.deltaTime;
+        }
     }
 }

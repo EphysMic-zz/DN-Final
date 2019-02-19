@@ -16,17 +16,24 @@ public class Key : MonoBehaviour
     [SerializeField] float _colorateSpeed;
     float _colorAmount;
 
+    CameraTransitionController _cameraTransition;
+    [SerializeField] float _timeShowingDoor;
+
     [SerializeField] GameObject _interactUI;
 
     public void InteractWithKey()
     {
-        coloring = true;
+        StartCoroutine(ShowDoorAnimation());
     }
 
     void Start()
     {
         _player = FindObjectOfType<Player>();
         _door = FindObjectOfType<Door>();
+
+        _cameraTransition = FindObjectOfType<CameraTransitionController>();
+
+        GetComponent<Renderer>().sharedMaterial.color = Color.red;
     }
 
     // Update is called once per frame
@@ -51,19 +58,46 @@ public class Key : MonoBehaviour
                 _interactUI.SetActive(false);
             }
         }
+    }
 
-        if (coloring)
+    IEnumerator ShowDoorAnimation()
+    {
+        _player.SetBlocked(true);
+
+        while (_cameraTransition != null && _cameraTransition.value < 1)
+        {
+            _cameraTransition.value += Time.deltaTime;
+            yield return null;
+        }
+
+        while(_colorAmount < 10)
         {
             var mat = GetComponent<Renderer>().sharedMaterial;
             _colorAmount += Time.deltaTime * _colorateSpeed;
 
-            mat.color = Color.LerpUnclamped(Color.red, Color.green, _colorAmount);
+            mat.color = Color.Lerp(Color.red, Color.green, _colorAmount);
 
-            if(_colorAmount >= 10)
+            if (_colorAmount >= 1)
             {
                 _door.Open();
                 coloring = false;
             }
         }
+
+        yield return new WaitForSeconds(_timeShowingDoor);
+
+        _cameraTransition = FindObjectOfType<CameraTransitionController>();
+
+        while (_cameraTransition != null && _cameraTransition.value > 0)
+        {
+            _cameraTransition.value -= Time.deltaTime;
+            yield return null;
+        }
+
+        _interactUI.SetActive(false);
+        _player.SetBlocked(false);
+        _player.Interact -= InteractWithKey;
+        Destroy(_cameraTransition);
+        Destroy(this);
     }
 }

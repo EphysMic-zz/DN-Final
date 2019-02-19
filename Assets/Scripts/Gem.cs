@@ -11,6 +11,8 @@ public class Gem : MonoBehaviour {
     [SerializeField] Enemy[] _enemies;
     Necromancer _boss;
 
+    [SerializeField] Transform _erikaTransform;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -46,7 +48,7 @@ public class Gem : MonoBehaviour {
 
             _player.EstoyDesesperando();
 
-            FindObjectOfType<Messages>().UpdateQuote("The symbol you make when you hit the ground seems the same as the one in the library...");
+            FindObjectOfType<Messages>().UpdateQuote("The symbol you make when you hit the ground \n seems the same as the one in the library...", _erikaTransform);
 
             Destroy(this);
         }

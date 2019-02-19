@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class Messages : MonoBehaviour {
 
     Player _player;
-    TextMesh _text;
+    [SerializeField] Text _text;
 
     [SerializeField] float _rangeToShowText;
     string _currentQuote;
@@ -19,23 +20,29 @@ public class Messages : MonoBehaviour {
     bool _registered;
     bool _showing;
 
+    [SerializeField] Material _exclamationMat;
+    [SerializeField] ParticleSystem _exclamationParticles;
+
 	// Use this for initialization
 	void Start ()
     {
         _player = FindObjectOfType<Player>();
-        _text = GetComponent<TextMesh>();
 
         _currentQuote = "We need that necromancer's book. \n Maybe we should check in the library";
 
         FindObjectOfType<Necromancer>().OnBossDeath += () =>
         {
-            _currentQuote = "We got the book. Now let's get out of here, quickly.";
+            UpdateQuote("We got the book. Now let's get out of here, quickly.", transform);
         };
+
+        _exclamationMat.color = Color.red;
 	}
 	
     public void ShowText()
     {
         _text.text = _currentQuote;
+        _exclamationMat.color = Color.gray;
+        _exclamationParticles.Stop();
         if (!_showing)
             StartCoroutine(ShowTextStep());
     }
@@ -62,19 +69,23 @@ public class Messages : MonoBehaviour {
                 _interactUI.SetActive(false);
             }
         }
-
-        transform.forward = (transform.position - Camera.main.transform.position).normalized;
 	}
 
-    public void UpdateQuote(string quote)
+    public void UpdateQuote(string quote, Transform newPositionRotation)
     {
         _currentQuote = quote;
+        _exclamationMat.color = Color.red;
+        _exclamationParticles.Play();
+        transform.position = newPositionRotation.position;
+        transform.rotation = newPositionRotation.rotation;
     }
 
     IEnumerator ShowTextStep()
     {
         _showing = true;
+        _interactUI.SetActive(false);
         yield return new WaitForSeconds(5);
+        if(_registered) _interactUI.SetActive(true);
         _text.text = "";
         _showing = false;
     }
