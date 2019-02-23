@@ -49,12 +49,17 @@ public class Player : MonoBehaviour
     [SerializeField] ParticleSystem[] _healFX;
     [SerializeField] ParticleSystem[] _parryFX;
 
+    AudioManager _audioMg;
+    AudioSource _footSteps;
+
     void Start()
     {
         _controller = FindObjectOfType<InputHandler>();
         _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
         _sword = GetComponentInChildren<Sword>();
+        _audioMg = GetComponent<AudioManager>();
+        _footSteps = GetComponentInChildren<AudioSource>();
         _currentHealth = _maxHealth;
 
         #region FSM
@@ -78,7 +83,7 @@ public class Player : MonoBehaviour
         //Moving
         moving.OnUpdate += () =>
         {
-            if(!_blocked) transform.position += transform.forward * _controller.verticalAxis * _speed * Time.deltaTime;
+            if (!_blocked) transform.position += transform.forward * _controller.verticalAxis * _speed * Time.deltaTime;
 
             if (!_blocked) transform.Rotate(Vector3.up, _controller.horizontalAxis * _turnSpeed * Time.deltaTime);
 
@@ -100,7 +105,7 @@ public class Player : MonoBehaviour
         };
         attack.OnExit += () => _sword.GetComponent<Collider>().enabled = false;
         attack.AddTransition(PlayerActions.AttackReady, idle);
-        attack.AddTransition(PlayerActions.Blocking, defend);       
+        attack.AddTransition(PlayerActions.Blocking, defend);
         attack.AddTransition(PlayerActions.Hurt, damaged);
         attack.AddTransition(PlayerActions.Death, death);
 
@@ -246,10 +251,12 @@ public class Player : MonoBehaviour
             barrier.Disable();
         }
 
-        foreach(var part in _spellFX)
+        foreach (var part in _spellFX)
         {
             part.Play();
         }
+
+        _audioMg.PlayAudio("Spell");
     }
 
     public void SpellReady()
@@ -261,6 +268,11 @@ public class Player : MonoBehaviour
         {
             part.Stop();
         }
+    }
+
+    public void Footstep()
+    {
+        _footSteps.PlayOneShot(_footSteps.clip);
     }
 
     public void Damage(int amount)
@@ -281,6 +293,7 @@ public class Player : MonoBehaviour
                 _currentHealth -= amount;
                 OnPlayerHealthChanged(_currentHealth);
                 _fsm.Feed(PlayerActions.Hurt);
+                _audioMg.PlayAudio("Hit_Ugh");
             }
             else
             {
@@ -314,9 +327,9 @@ public class Player : MonoBehaviour
         OnPlayerHealthChanged(_currentHealth);
 
         //Destruccion de la botella 
-        Destroy(Physics.OverlapSphere(transform.position, 1)
-                .Where(x => x.GetComponent<Potion>() != null)
-                .Select(x => x.GetComponent<Potion>()).First().gameObject);
+        Physics.OverlapSphere(transform.position, 1)
+               .Where(x => x.GetComponent<Potion>() != null)
+               .Select(x => x.GetComponent<Potion>()).First().DelayedDestroy();
 
         foreach (var fx in _healFX)
         {

@@ -266,6 +266,8 @@ GameObject:
   - component: {fileID: 4110741060990148}
   - component: {fileID: 65919969401978016}
   - component: {fileID: 114757211397343842}
+  - component: {fileID: 82882626665199426}
+  - component: {fileID: 114402206747069918}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -1059,6 +1061,87 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.14177856, y: 0.102050245, z: 1.2270133}
   m_Center: {x: -0.023956377, y: 0.2182756, z: -0.072839424}
+--- !u!82 &82882626665199426
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1560210780801514}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243954372323469708, guid: 7980b37668bdcef4e9fc916c59a6b394,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95908856860818020
 Animator:
   serializedVersion: 3
@@ -1095,6 +1178,20 @@ MonoBehaviour:
   _rangeOfVision: 15
   _angleOfVision: 90
   currentState: 
+--- !u!114 &114402206747069918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1560210780801514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec29f622561efa45990011f9323dd4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audios:
+  - name: Hit
+    clip: {fileID: 8300000, guid: 3d30905eca2c0c84f94a15a3ba7b5875, type: 3}
 --- !u!114 &114757211397343842
 MonoBehaviour:
   m_ObjectHideFlags: 1

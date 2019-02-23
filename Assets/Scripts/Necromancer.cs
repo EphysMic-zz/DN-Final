@@ -27,12 +27,16 @@ public class Necromancer : Enemy
     Collider _collider;
 
     public event Action OnBossDeath = delegate { };
+    public event Action OnBattleStarted = delegate { };
+
+    AudioManager _audioMg;
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
 
+        _audioMg = GetComponent<AudioManager>();
         _collider = GetComponent<Collider>();
 
         _skeletonPositions = new Vector3[_skeletons.Length];
@@ -134,6 +138,8 @@ public class Necromancer : Enemy
         {
             _fsm.Feed(BossActions.StartBattle);
 
+            OnBattleStarted();
+
             foreach (var firewall in _fireWalls)
                 firewall.gameObject.SetActive(true);
             
@@ -167,6 +173,8 @@ public class Necromancer : Enemy
         var energyBall = Instantiate(_energyBallPrefab);
         energyBall.transform.position = _shootPoint.position;
         energyBall.transform.forward = transform.forward;
+
+        _audioMg.PlayAudio("Fireball");
 
         _currentShots++;        
         _fsm.Feed(BossActions.Shooted);
@@ -219,6 +227,7 @@ public class Necromancer : Enemy
         if (_currentHealth > 0)
         {
             _fsm.Feed(BossActions.Damaged);
+            _audioMg.PlayAudio("Hit");
             _anim.Play("GetHit");
         }
         else

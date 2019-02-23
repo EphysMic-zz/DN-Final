@@ -6,10 +6,13 @@ public class Sword : MonoBehaviour {
 
     [SerializeField] int damage;
 
+    AudioManager _audioMg;
+
 	// Use this for initialization
 	void Start ()
     {
         GetComponent<Collider>().enabled = false;
+        _audioMg = GetComponent<AudioManager>();
 	}
 	
 	// Update is called once per frame
@@ -22,8 +25,16 @@ public class Sword : MonoBehaviour {
         var player = other.GetComponent<Player>();
         var enemy = other.GetComponent<Enemy>();
 
-        if (player) player.Damage(damage);
-        if (enemy) enemy.Damage(damage);
+        if (player)
+        {
+            player.Damage(damage);
+            _audioMg.PlayAudio("Hit");
+        }
+        if (enemy)
+        {
+            enemy.Damage(damage);
+            _audioMg.PlayAudio("Hit");
+        }
 
         GetComponent<Collider>().enabled = false;
     }

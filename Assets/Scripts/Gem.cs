@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
 public class Gem : MonoBehaviour {
 
@@ -12,6 +14,9 @@ public class Gem : MonoBehaviour {
     Necromancer _boss;
 
     [SerializeField] Transform _erikaTransform;
+
+    public event Action OnPowerPicked = delegate { };
+    public event Action OnPowerUsed = delegate { };
 
 	// Use this for initialization
 	void Start ()
@@ -50,7 +55,18 @@ public class Gem : MonoBehaviour {
 
             FindObjectOfType<Messages>().UpdateQuote("The symbol you make when you hit the ground \n seems the same as the one in the library...", _erikaTransform);
 
-            Destroy(this);
+            OnPowerPicked();
+
+            _interactRange = 0;
+        }
+
+        if(_interactRange == 0)
+        {
+            if(_barriers.All(x => !x.gameObject.activeInHierarchy))
+            {
+                OnPowerUsed();
+                Destroy(this);
+            }
         }
 	}
 }
