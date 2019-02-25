@@ -20,12 +20,16 @@ public class Skeleton : Enemy {
 
     public string currentState;
 
+    AudioManager _audioMg;
+
 	// Use this for initialization
 	protected override void Start ()
     {
         base.Start();
 
         _dustParticles = GetComponentInChildren<ParticleSystem>();
+
+        _audioMg = GetComponent<AudioManager>();
 
         _sword = GetComponentInChildren<Sword>();
 
@@ -48,6 +52,7 @@ public class Skeleton : Enemy {
         {
             _navMesh.isStopped = false;
             _navMesh.SetDestination(_player.transform.position);
+            _audioMg.PlayAudio("Aggro");
         };
         chasing.OnUpdate += () =>
         {
@@ -179,6 +184,11 @@ public class Skeleton : Enemy {
     public void Reborn()
     {
         _fsm.Feed(EnemyActions.Reborn);
+    }
+
+    public void SendToPlayer()
+    {
+        if(_fsm != null) _fsm.Feed(EnemyActions.PlayerInSight);
     }
 
     IEnumerator Dissolve()

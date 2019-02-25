@@ -35,7 +35,8 @@ public class Jukebox : MonoBehaviour
         if (!_audioSource.isPlaying)
         {
             _audioSource.loop = true;
-            _audioSource.PlayOneShot(_nameToClip[wich]);
+            _audioSource.clip = _nameToClip[wich];
+            _audioSource.Play();
             return;
         }
 
@@ -50,8 +51,8 @@ public class Jukebox : MonoBehaviour
             yield return null;
         }
 
-        _audioSource.Stop();
-        _audioSource.PlayOneShot(_nameToClip[theme]);
+        _audioSource.clip = _nameToClip[theme];
+        _audioSource.Play();
 
         while (_audioSource.volume < 1)
         {

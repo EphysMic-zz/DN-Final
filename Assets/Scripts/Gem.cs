@@ -62,7 +62,7 @@ public class Gem : MonoBehaviour {
 
         if(_interactRange == 0)
         {
-            if(_barriers.All(x => !x.gameObject.activeInHierarchy))
+            if(!_barriers[0].gameObject.activeInHierarchy)
             {
                 OnPowerUsed();
                 Destroy(this);

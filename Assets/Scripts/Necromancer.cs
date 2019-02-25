@@ -31,6 +31,8 @@ public class Necromancer : Enemy
 
     AudioManager _audioMg;
 
+    [SerializeField] Transform _erikaTransform;
+
     // Use this for initialization
     protected override void Start()
     {
@@ -111,6 +113,7 @@ public class Necromancer : Enemy
             foreach (var firewall in _fireWalls)
                 firewall.gameObject.SetActive(false);
             OnBossDeath();
+            FindObjectOfType<Messages>().UpdateQuote("We got the book. Now let's get out of here, quickly.", _erikaTransform);
         };
 
         _fsm = new EventFSM<BossActions>(waiting);
@@ -208,6 +211,7 @@ public class Necromancer : Enemy
             if (_skeletons[i].currentState == "Dead") _skeletons[i].Reborn();
 
             _skeletons[i].transform.LookAt(_player.transform);
+            _skeletons[i].SendToPlayer();
         }
     }
 
@@ -232,8 +236,8 @@ public class Necromancer : Enemy
         }
         else
         {
-            _fsm.Feed(BossActions.Death);
-            
+            _audioMg.PlayAudio("Hit");
+            _fsm.Feed(BossActions.Death);           
         }
     }
 }

@@ -63,6 +63,7 @@ public class Key : MonoBehaviour
     IEnumerator ShowDoorAnimation()
     {
         _player.SetBlocked(true);
+        _interactUI.SetActive(false);
 
         while (_cameraTransition != null && _cameraTransition.value < 1)
         {
@@ -94,7 +95,6 @@ public class Key : MonoBehaviour
             yield return null;
         }
 
-        _interactUI.SetActive(false);
         _player.SetBlocked(false);
         _player.Interact -= InteractWithKey;
         Destroy(_cameraTransition);

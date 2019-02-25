@@ -23,17 +23,14 @@ public class Messages : MonoBehaviour {
     [SerializeField] Material _exclamationMat;
     [SerializeField] ParticleSystem _exclamationParticles;
 
+    public event Action MessageShown = delegate { };
+
 	// Use this for initialization
 	void Start ()
     {
         _player = FindObjectOfType<Player>();
 
         _currentQuote = "We need that necromancer's book. \n Maybe we should check in the library";
-
-        FindObjectOfType<Necromancer>().OnBossDeath += () =>
-        {
-            UpdateQuote("We got the book. Now let's get out of here, quickly.", transform);
-        };
 
         _exclamationMat.color = Color.red;
 	}
@@ -88,5 +85,6 @@ public class Messages : MonoBehaviour {
         if(_registered) _interactUI.SetActive(true);
         _text.text = "";
         _showing = false;
+        MessageShown();
     }
 }
