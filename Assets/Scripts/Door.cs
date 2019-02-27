@@ -6,6 +6,7 @@ public class Door : MonoBehaviour
 {
     public void Open()
     {
-        Destroy(gameObject);
+        GetComponent<Animator>().SetBool("Opened", true);
+        GetComponent<AudioSource>().Play();
     }
 }

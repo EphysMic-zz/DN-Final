@@ -12,9 +12,8 @@ public class Key : MonoBehaviour
     bool _registered;
     Door _door;
 
-    public bool coloring;
+    [SerializeField] Material _colorLerpMaterial;
     [SerializeField] float _colorateSpeed;
-    float _colorAmount;
 
     CameraTransitionController _cameraTransition;
     [SerializeField] float _timeShowingDoor;
@@ -33,7 +32,7 @@ public class Key : MonoBehaviour
 
         _cameraTransition = FindObjectOfType<CameraTransitionController>();
 
-        GetComponent<Renderer>().sharedMaterial.color = Color.red;
+        _colorLerpMaterial.SetFloat("_Transition", 0);
     }
 
     // Update is called once per frame
@@ -65,25 +64,25 @@ public class Key : MonoBehaviour
         _player.SetBlocked(true);
         _interactUI.SetActive(false);
 
+        foreach (var enemy in FindObjectsOfType<Skeleton>())
+            enemy.SetBlock(true);
+        
+
         while (_cameraTransition != null && _cameraTransition.value < 1)
         {
             _cameraTransition.value += Time.deltaTime;
             yield return null;
         }
 
-        while(_colorAmount < 10)
+        float amount = 0;
+        while(_colorLerpMaterial.GetFloat("_Transition") < 1)
         {
-            var mat = GetComponent<Renderer>().sharedMaterial;
-            _colorAmount += Time.deltaTime * _colorateSpeed;
-
-            mat.color = Color.Lerp(Color.red, Color.green, _colorAmount);
-
-            if (_colorAmount >= 1)
-            {
-                _door.Open();
-                coloring = false;
-            }
+            _colorLerpMaterial.SetFloat("_Transition", amount);
+            amount += Time.deltaTime * _colorateSpeed;
+            yield return null;
         }
+
+        _door.Open();
 
         yield return new WaitForSeconds(_timeShowingDoor);
 
@@ -94,6 +93,9 @@ public class Key : MonoBehaviour
             _cameraTransition.value -= Time.deltaTime;
             yield return null;
         }
+
+        foreach (var enemy in FindObjectsOfType<Skeleton>())
+            enemy.SetBlock(false);
 
         _player.SetBlocked(false);
         _player.Interact -= InteractWithKey;

@@ -24,6 +24,7 @@ public class Necromancer : Enemy
     Vector3 _currentWaypoint;
 
     [SerializeField] float _rangeToBeginBattle;
+    float _auxRangeToBegin;
     Collider _collider;
 
     public event Action OnBossDeath = delegate { };
@@ -38,6 +39,7 @@ public class Necromancer : Enemy
     {
         base.Start();
 
+        _auxRangeToBegin = _rangeToBeginBattle;
         _audioMg = GetComponent<AudioManager>();
         _collider = GetComponent<Collider>();
 
@@ -129,6 +131,10 @@ public class Necromancer : Enemy
             _currentHealth = _maxHealth;
             DisableBarriers();
             DisableSkeletons();
+            _rangeToBeginBattle = _auxRangeToBegin;
+
+            foreach (var firewall in _fireWalls)
+                firewall.gameObject.SetActive(false);
         };
     }
 

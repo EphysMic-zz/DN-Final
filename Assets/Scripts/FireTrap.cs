@@ -10,10 +10,13 @@ public class FireTrap : MonoBehaviour {
 
     [SerializeField] int _damage;
 
+    AudioManager _audioMg;
+
 	// Use this for initialization
 	void Start ()
     {
         GetComponent<Collider>().enabled = false;
+        _audioMg = GetComponent<AudioManager>();
     }
 	
 	// Update is called once per frame
@@ -31,17 +34,18 @@ public class FireTrap : MonoBehaviour {
     void LightUp()
     {
         foreach (var ps in GetComponentsInChildren<ParticleSystem>().Where(x => !x.isPlaying))
-        {
             ps.Play();
-        }
 
-        GetComponent<Collider>().enabled = true;
+        _audioMg.PlayAudio("Burst");
+
         StartCoroutine(DelayedCollider());
     }
 
     IEnumerator DelayedCollider()
-    {       
-        yield return new WaitForSeconds(2f);
+    {
+        yield return new WaitForSeconds(.5f);
+        GetComponent<Collider>().enabled = true;
+        yield return new WaitForSeconds(1.5f);
         GetComponent<Collider>().enabled = false;
     }
 

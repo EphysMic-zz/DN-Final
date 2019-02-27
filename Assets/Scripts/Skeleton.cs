@@ -22,6 +22,8 @@ public class Skeleton : Enemy {
 
     AudioManager _audioMg;
 
+    bool _blocked;
+
 	// Use this for initialization
 	protected override void Start ()
     {
@@ -108,20 +110,23 @@ public class Skeleton : Enemy {
     // Update is called once per frame
     void Update ()
     {
-        _fsm.Update();
+        if (!_blocked)
+        {
+            _fsm.Update();
 
-        if (LineOfSight())
-            _fsm.Feed(EnemyActions.PlayerInSight);
+            if (LineOfSight())
+                _fsm.Feed(EnemyActions.PlayerInSight);
 
-        if(Vector3.Distance(transform.position, _player.transform.position) > _rangeOfVision)
-            _fsm.Feed(EnemyActions.PlayerOutOfInterest);
+            if (Vector3.Distance(transform.position, _player.transform.position) > _rangeOfVision)
+                _fsm.Feed(EnemyActions.PlayerOutOfInterest);
 
-        if (Vector3.Distance(transform.position, _player.transform.position) < _rangeToAttack)
-            _fsm.Feed(EnemyActions.PlayerInRange);
-        else
-            _fsm.Feed(EnemyActions.PlayerOutOfRange);
+            if (Vector3.Distance(transform.position, _player.transform.position) < _rangeToAttack)
+                _fsm.Feed(EnemyActions.PlayerInRange);
+            else
+                _fsm.Feed(EnemyActions.PlayerOutOfRange);
 
-        currentState = _fsm.current.name;
+            currentState = _fsm.current.name;
+        }        
 	}
 
     private void OnDrawGizmosSelected()
@@ -230,5 +235,10 @@ public class Skeleton : Enemy {
             yield return null;
             amount -= Time.deltaTime;
         }
+    }
+
+    public void SetBlock(bool b)
+    {
+        _blocked = b;
     }
 }

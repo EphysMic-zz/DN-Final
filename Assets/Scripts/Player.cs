@@ -308,6 +308,7 @@ public class Player : MonoBehaviour
     {
         _fsm.Feed(PlayerActions.Revive);
         _currentHealth = latestCheckpoint.currentHealth;
+        OnPlayerHealthChanged(_currentHealth);
         transform.position = latestCheckpoint.transform.position;
     }
 
