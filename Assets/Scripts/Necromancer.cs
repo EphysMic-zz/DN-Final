@@ -125,6 +125,7 @@ public class Necromancer : Enemy
         _player.OnPlayerDeath += () =>
         {
             _fsm = new EventFSM<BossActions>(waiting);
+            _navMesh.isStopped = true;
             transform.position = initialPosition;
             _currentShots = 0;
             _targetShots = UnityEngine.Random.Range(_minAmountOfShots, _maxAmountOfShots);
@@ -132,9 +133,14 @@ public class Necromancer : Enemy
             DisableBarriers();
             DisableSkeletons();
             _rangeToBeginBattle = _auxRangeToBegin;
+            
 
             foreach (var firewall in _fireWalls)
                 firewall.gameObject.SetActive(false);
+
+            foreach (var fireball in FindObjectsOfType<EnergyBall>())
+                Destroy(fireball.gameObject);
+            
         };
     }
 
@@ -209,15 +215,18 @@ public class Necromancer : Enemy
     {
         for (int i = 0; i < _skeletons.Length; i++)
         {
-            _skeletons[i].gameObject.SetActive(true);
-            _skeletons[i].Appear();
-            _skeletons[i].transform.position = _skeletonPositions[i];
-            _skeletons[i].Health = _skeletons[i].MaxHealth;
+            if (!_skeletons[i].gameObject.activeInHierarchy)
+            {
+                _skeletons[i].gameObject.SetActive(true);
+                _skeletons[i].Appear();
+                _skeletons[i].transform.position = _skeletonPositions[i];
+                _skeletons[i].Health = _skeletons[i].MaxHealth;
 
-            if (_skeletons[i].currentState == "Dead") _skeletons[i].Reborn();
+                if (_skeletons[i].currentState == "Dead") _skeletons[i].Reborn();
 
-            _skeletons[i].transform.LookAt(_player.transform);
-            _skeletons[i].SendToPlayer();
+                _skeletons[i].transform.LookAt(_player.transform);
+                _skeletons[i].SendToPlayer();
+            }
         }
     }
 

@@ -62,7 +62,7 @@ public class FadeToBlack : MonoBehaviour
             t += Time.deltaTime;
         }
 
-        enabled = false;
         Application.Quit();
+        enabled = false;
     }
 }

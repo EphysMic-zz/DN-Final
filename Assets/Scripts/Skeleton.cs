@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : Enemy {
+public class Skeleton : Enemy
+{
 
     EventFSM<EnemyActions> _fsm;
 
@@ -24,8 +25,9 @@ public class Skeleton : Enemy {
 
     bool _blocked;
 
-	// Use this for initialization
-	protected override void Start ()
+    // Use this for initialization
+
+    protected override void Start()
     {
         base.Start();
 
@@ -60,7 +62,7 @@ public class Skeleton : Enemy {
         {
             _timeToUpdatePath += Time.deltaTime;
 
-            if(_timeToUpdatePath >= _onTimeToUpdatePath)
+            if (_timeToUpdatePath >= _onTimeToUpdatePath)
             {
                 _navMesh.SetDestination(_player.transform.position);
                 _timeToUpdatePath = 0;
@@ -80,6 +82,12 @@ public class Skeleton : Enemy {
 
         //Attacking
         float _timeToAttack = _onTimeToAttack;
+
+        attacking.OnEnter += () =>
+        {
+            transform.LookAt(_player.transform);
+        };
+
         attacking.OnUpdate += () =>
         {
             _timeToAttack += Time.deltaTime;
@@ -108,7 +116,7 @@ public class Skeleton : Enemy {
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         if (!_blocked)
         {
@@ -126,8 +134,8 @@ public class Skeleton : Enemy {
                 _fsm.Feed(EnemyActions.PlayerOutOfRange);
 
             currentState = _fsm.current.name;
-        }        
-	}
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {
@@ -150,7 +158,7 @@ public class Skeleton : Enemy {
 
         bool nothingBetween = false;
         RaycastHit rayInfo = new RaycastHit();
-        if(Physics.Raycast(transform.position + Vector3.up * .8f, direction, out rayInfo))
+        if (Physics.Raycast(transform.position + Vector3.up * .8f, direction, out rayInfo, LayerMask.GetMask("Player")))
         {
             nothingBetween = rayInfo.transform.GetComponent<Player>();
         }
@@ -193,7 +201,13 @@ public class Skeleton : Enemy {
 
     public void SendToPlayer()
     {
-        if(_fsm != null) _fsm.Feed(EnemyActions.PlayerInSight);
+        StartCoroutine(SendToPlayerStep());
+    }
+
+    IEnumerator SendToPlayerStep()
+    {
+        yield return new WaitForSeconds(.1f);
+        _fsm.Feed(EnemyActions.PlayerInSight);
     }
 
     IEnumerator Dissolve()

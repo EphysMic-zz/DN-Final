@@ -189,6 +189,8 @@ public class Player : MonoBehaviour
             if (!_blocked) Interact();
         };
         #endregion
+
+        Cursor.visible = false;
     }
 
     void Update()
@@ -310,6 +312,7 @@ public class Player : MonoBehaviour
         _currentHealth = latestCheckpoint.currentHealth;
         OnPlayerHealthChanged(_currentHealth);
         transform.position = latestCheckpoint.transform.position;
+        transform.rotation = latestCheckpoint.transform.rotation;
     }
 
     IEnumerator DelayedDie()

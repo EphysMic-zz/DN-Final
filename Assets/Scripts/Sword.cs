@@ -29,13 +29,15 @@ public class Sword : MonoBehaviour {
         {
             player.Damage(damage);
             _audioMg.PlayAudio("Hit");
+            GetComponent<Collider>().enabled = false;
+
         }
         if (enemy)
         {
             enemy.Damage(damage);
             _audioMg.PlayAudio("Hit");
-        }
+            GetComponent<Collider>().enabled = false;
 
-        GetComponent<Collider>().enabled = false;
+        }
     }
 }

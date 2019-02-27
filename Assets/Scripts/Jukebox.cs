@@ -27,6 +27,10 @@ public class Jukebox : MonoBehaviour
         gem.OnPowerPicked += () => PlayTheme("Battle");
         gem.OnPowerUsed += () => PlayTheme("Main");
 
+        var player = FindObjectOfType<Player>();
+
+        player.OnPlayerDeath += () => PlayTheme("Main");
+
         PlayTheme("Main");
     }
 
