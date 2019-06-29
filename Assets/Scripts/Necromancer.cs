@@ -13,6 +13,7 @@ public class Necromancer : Enemy
 
     [SerializeField] Skeleton[] _skeletons;
     Vector3[] _skeletonPositions;
+    int _skeletonsToSpawn = 2;
 
     [SerializeField] EnergyBall _energyBallPrefab;
     [SerializeField] Transform _shootPoint;
@@ -213,7 +214,7 @@ public class Necromancer : Enemy
 
     void SpawnSkeletons()
     {
-        for (int i = 0; i < _skeletons.Length; i++)
+        for (int i = 0; i < _skeletonsToSpawn; i++)
         {
             if (!_skeletons[i].gameObject.activeInHierarchy)
             {
@@ -228,6 +229,8 @@ public class Necromancer : Enemy
                 _skeletons[i].SendToPlayer();
             }
         }
+
+        _skeletonsToSpawn++;
     }
 
     void DisableSkeletons()
